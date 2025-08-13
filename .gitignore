@@ -1,0 +1,19 @@
+# MacOS specific files
+.DS_Store
+
+# Python files
+__pycache__
+*.py[cod]
+
+# Development files
+dev/
+depr/
+
+# Draw.io diagrams
+*.drawio
+
+# Environments
+venv/
+
+# Hidden files
+.*
