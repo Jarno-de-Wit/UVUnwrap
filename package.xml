@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<package format="1" xmlns="https://wiki.freecad.org/Package_Metadata">
+
+  <name>UVUnwrap</name>
+  <description>A workbench for performing UV unwrapping / texture mapping on CAD models.</description>
+  <version>0.1.0</version>
+  <date>2025-08-14</date>
+  <maintainer email="jarnodewit02@gmail.com">Jarno de Wit</maintainer>
+  <license file="LICENSE">LGPL-2.1-or-later</license>
+  <url type="repository">https://github.com/Jarno-de-Wit/UVUnwrap</url>
+  <icon>UVUnwrap/resources/icons/icon.svg</icon>
+  <pythonmin>3.8.0</pythonmin>
+
+  <content>
+    <workbench>
+      <name>UVUnwrap</name>
+      <classname>UVUnwrap</classname>
+      <subdirectory>./UVUnwrap/</subdirectory>
+      <depend type="python">numpy</depend>
+      <depend type="python">scipy</depend>
+    </workbench>
+  </content>
+
+</package>
