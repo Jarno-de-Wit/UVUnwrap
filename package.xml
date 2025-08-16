@@ -8,6 +8,7 @@
   <maintainer email="jarnodewit02@gmail.com">Jarno de Wit</maintainer>
   <license file="LICENSE">LGPL-2.1-or-later</license>
   <url type="repository" branch="main">https://github.com/Jarno-de-Wit/UVUnwrap</url>
+  <url type="bugtracker">https://github.com/Jarno-de-Wit/UVUnwrap/issues</url>
   <icon>UVUnwrap/resources/icons/icon.svg</icon>
   <pythonmin>3.8.0</pythonmin>
 
