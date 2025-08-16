@@ -18,7 +18,8 @@ class UnderconstrainedMeshException( UVUnwrapException ):
     pass
 class OverconstrainedMeshException( UVUnwrapException ):
     pass
-
+class InvalidSelectionException( UVUnwrapException ):
+    pass
 
 def warn(warning):
     App.Console.PrintWarning(f"{warning.__class__.__name__}: {', '.join(warning.args)}\n")

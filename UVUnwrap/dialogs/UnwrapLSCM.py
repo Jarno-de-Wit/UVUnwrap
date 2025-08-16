@@ -6,7 +6,7 @@ import FreeCADGui as Gui
 # Local module imports
 import UVUlib
 from .UnwrapDialog import unwrapDialog
-from unwrapping import UVMesh
+from unwrapping import UVMeshLSCM
 from unwrapping import UVPin
 
 class UnwrapDialogLSCM(unwrapDialog):
@@ -37,9 +37,9 @@ class UnwrapDialogLSCM(unwrapDialog):
         # Try to create an object. If it fails due to an invalid value, don't close the dialog. The message will be provided by the creation function.
         try:
             if self.uvMesh is None:
-                UVMesh.make_UVMesh("lscm", faceMesh, self.pins)
+                UVMeshLSCM.make_UVMeshLSCM(faceMesh, self.pins)
             else:
-                UVMesh.update_UVMesh(self.uvMesh.obj, faceMesh, self.pins)
+                UVMeshLSCM.update_UVMeshLSCM(self.uvMesh.obj, faceMesh, self.pins)
         except ValueError:
             return False
 
