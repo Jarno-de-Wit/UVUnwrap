@@ -244,7 +244,7 @@ class FaceMeshVP():
         self.obj = obj
 
     def getIcon(self):
-        return os.path.join(UVUlib.path_icons, "meshify.png")
+        return os.path.join(UVUlib.path_icons, "FaceMesh.svg")
 
     def setEdit(self, obj, edit_mode):
         if edit_mode == 0:

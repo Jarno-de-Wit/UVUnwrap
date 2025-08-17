@@ -10,7 +10,7 @@ import dialogs
 class UVU_com_meshify():
     def GetResources(self):
         return {
-            "Pixmap": os.path.join(UVUlib.path_icons, "meshify.png"),
+            "Pixmap": os.path.join(UVUlib.path_icons, "FaceMesh.svg"),
             "MenuText": "Meshify",
             "ToolTip": "Creates UV mappable meshes from the selected objects",
         }
