@@ -33,7 +33,7 @@ class MultiPacking(PackingBase):
         # Sets the scale such that (with a 5% margin):
         # 1. The total area of the meshes does not exceed the available resolution.
         # 2. The objects all individually fit into the image even on their longest axis.
-        scale = 0.95 * min(math.sqrt(self.obj.Resolution[0] * self.obj.Resolution[1] / area),
+        scale = min(math.sqrt(self.obj.Resolution[0] * self.obj.Resolution[1] / area),
             self.obj.Resolution[0] / max(mesh[2] - mesh[0] for mesh in meshes.values()),
             self.obj.Resolution[1] / max(mesh[3] - mesh[1] for mesh in meshes.values()))
         meshes = {key: val for key, val in sorted(meshes.items(), key = lambda item: (item[1][2] - item[1][0]) * (item[1][3] - item[1][1]), reverse = True)}
