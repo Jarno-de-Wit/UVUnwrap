@@ -109,7 +109,7 @@ class UVPinVP():
         self.obj = obj
 
     def getIcon(self):
-        return os.path.join(UVUlib.path_icons, "UVPin.png")
+        return os.path.join(UVUlib.path_icons, "UVPin.svg")
 
     def setEdit(self, obj, edit_mode):
         if edit_mode == 0:

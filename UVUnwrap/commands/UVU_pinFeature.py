@@ -10,7 +10,7 @@ import dialogs
 class UVU_com_pinFeature():
     def GetResources(self):
         return {
-            "Pixmap": os.path.join(UVUlib.path_icons, "pin_feature.png"),
+            "Pixmap": os.path.join(UVUlib.path_icons, "UVPin.svg"),
             "MenuText": "Pin Vertex",
             "ToolTip": "Pins the selected vertex to a relative UV coordinate",
         }
