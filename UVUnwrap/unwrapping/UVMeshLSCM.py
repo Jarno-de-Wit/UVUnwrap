@@ -53,6 +53,9 @@ class UVMeshLSCM(UVMesh):
     def taskDialog(self):
         return dialogs.UnwrapDialogLSCM
 
+class UVMeshLSCMVP(UVMeshVP):
+    def getIcon(self):
+        return os.path.join(UVUlib.path_icons, "UVMeshLSCM.svg")
 
 def make_UVMeshLSCM(faceMesh: tuple[str], pins: list[tuple[str]]):
     """
@@ -64,7 +67,7 @@ def make_UVMeshLSCM(faceMesh: tuple[str], pins: list[tuple[str]]):
 
     obj = App.ActiveDocument.addObject("Part::FeaturePython", f"UVMeshLSCM")
     uvMesh = UVMeshLSCM(obj, faceMesh, pins)
-    uvMesh_vp = UVMeshVP(obj.ViewObject)
+    uvMesh_vp = UVMeshLSCMVP(obj.ViewObject)
     App.ActiveDocument.recompute()
     return obj
 

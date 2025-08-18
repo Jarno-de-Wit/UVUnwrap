@@ -179,12 +179,7 @@ class UVMeshVP():
         obj.Proxy = self
         self.obj = obj
 
-    def getIcon(self):
-        return os.path.join(UVUlib.path_icons, "uv_mesh.png")
-
     def setEdit(self, obj, edit_mode):
-        # TODO:
-        # Maybe first set as active object, and only then open the TD if it is set to edited again?
         if edit_mode == 0:
             taskDialog = obj.Object.Proxy.taskDialog(obj.Object.Proxy)
             Gui.Control.showDialog(taskDialog)
@@ -195,9 +190,6 @@ class UVMeshVP():
             return self.obj.Object.Proxy.claimChildren()
         except:
             return []
-
-    def onDocumentRestored(self, obj):
-        self.obj = obj
 
     def __getstate__(self):
         return {}

@@ -12,7 +12,7 @@ class UVU_com_unwrap():
         self.method = method
     def GetResources(self):
         return {
-            "Pixmap": os.path.join(UVUlib.path_icons, f"unwrap_{self.method}.png"),
+            "Pixmap": os.path.join(UVUlib.path_icons, f"UVMesh{self.method}.svg"),
             "MenuText": f"Unwrap {self.method}",
             "ToolTip": f"Unwraps the given FaceMesh to UV coordinates using the given method: {self.method}",
         }
@@ -22,7 +22,7 @@ class UVU_com_unwrap():
 
     def Activated(self):
         selection = UVUlib.get_feature_selection()
-        if self.method == "lscm":
+        if self.method == "LSCM":
             taskDialog = dialogs.UnwrapDialogLSCM()
         else:
             App.Console.PrintCritical("Invalid unwrapping method selected. This shouldn't have happened.")
@@ -31,4 +31,4 @@ class UVU_com_unwrap():
             Gui.Selection.addSelection(*sel)
         Gui.Control.showDialog(taskDialog)
 
-Gui.addCommand("UVU_unwrapLSCM", UVU_com_unwrap("lscm"))
+Gui.addCommand("UVU_unwrapLSCM", UVU_com_unwrap("LSCM"))
