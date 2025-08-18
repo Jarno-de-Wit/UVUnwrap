@@ -28,13 +28,13 @@ class UVUnwrap(Workbench):
         self.appendToolbar("UVU_meshing", meshing_commands)
         self.appendToolbar("UVU_unwrapping", unwrapping_commands)
         self.appendToolbar("UVU_packing", packing_commands)
-        self.appendToolbar("UVU_selection", selection_commands)
         self.appendToolbar("UVU_export", export_commands)
 
         self.appendMenu("UVUnwrap", meshing_commands)
         self.appendMenu("UVUnwrap", unwrapping_commands)
         self.appendMenu("UVUnwrap", packing_commands)
         self.appendMenu("UVUnwrap", export_commands)
+        self.appendMenu("UVUnwrap", selection_commands)
 
     def Activated(self):
         FreeCAD.Console.PrintLog("UV Unwrapping workbench activated\n")
