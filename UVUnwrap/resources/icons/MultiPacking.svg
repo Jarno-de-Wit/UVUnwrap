@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="16"
+   height="16"
+   viewBox="0 0 16 16"
+   version="1.1"
+   id="svg1"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <g
+     id="layer1">
+    <rect
+       style="fill:none;stroke:#3a4546;stroke-width:1;stroke-opacity:1"
+       id="rect1"
+       width="13"
+       height="13"
+       x="1.5000001"
+       y="1.5" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-opacity:1"
+       d="M 16,14.5 H 14.5 V 16"
+       id="path7" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-opacity:1"
+       d="M 0,14.5 H 1.5 V 16"
+       id="path8" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-opacity:1"
+       d="M 14.5,0 V 1.5 H 16"
+       id="path6" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-opacity:1"
+       d="M 0,1.5 H 1.5 V 0"
+       id="path5" />
+  </g>
+  <g
+     id="layer2"
+     style="display:inline">
+    <rect
+       style="fill:#373fbd;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-opacity:1"
+       id="rect2"
+       width="5"
+       height="6"
+       x="2"
+       y="2" />
+    <rect
+       style="fill:#6ea47a;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-opacity:1"
+       id="rect2-8"
+       width="5"
+       height="4"
+       x="7"
+       y="2" />
+    <rect
+       style="fill:#de6977;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-opacity:1"
+       id="rect2-8-2"
+       width="4"
+       height="5"
+       x="2"
+       y="8" />
+    <rect
+       style="fill:#deaa69;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-opacity:1"
+       id="rect2-8-1"
+       width="3"
+       height="3"
+       x="7"
+       y="6" />
+  </g>
+  <g
+     id="g6"
+     style="display:none">
+    <rect
+       style="fill:#373fbd;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-opacity:1"
+       id="rect3"
+       width="5"
+       height="6"
+       x="2"
+       y="2" />
+    <rect
+       style="fill:#6ea47a;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-opacity:1"
+       id="rect4"
+       width="5"
+       height="4"
+       x="9"
+       y="3" />
+    <rect
+       style="fill:#de6977;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-opacity:1"
+       id="rect5"
+       width="4"
+       height="5"
+       x="4"
+       y="8" />
+  </g>
+  <g
+     id="layer3"
+     transform="rotate(-30,13.509771,13.05956)"
+     style="display:none">
+    <path
+       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.8;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 13,8 -2,5 h 1.25 v 2 h 1.5 V 13 H 15 Z"
+       id="path1" />
+  </g>
+</svg>

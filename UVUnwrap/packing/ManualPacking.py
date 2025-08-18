@@ -24,7 +24,7 @@ class ManualPacking(PackingBase):
 class ManualPackingVP(PackingVPBase):
 
     def getIcon(self):
-        return os.path.join(UVUlib.path_icons, "packing_manual.png")
+        return os.path.join(UVUlib.path_icons, "ManualPacking.svg")
 
     @property
     def taskDialog(self):

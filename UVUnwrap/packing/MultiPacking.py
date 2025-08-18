@@ -69,7 +69,7 @@ class MultiPacking(PackingBase):
 
 class MultiPackingVP(PackingVPBase):
     def getIcon(self):
-        return os.path.join(UVUlib.path_icons, "packing_multi.png")
+        return os.path.join(UVUlib.path_icons, "MultiPacking.svg")
 
     @property
     def taskDialog(self):

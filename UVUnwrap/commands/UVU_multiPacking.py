@@ -10,7 +10,7 @@ import dialogs
 class UVU_com_multiPacking():
     def GetResources(self):
         return {
-            "Pixmap": os.path.join(UVUlib.path_icons, "packing_multi.png"),
+            "Pixmap": os.path.join(UVUlib.path_icons, "MultiPacking.svg"),
             "MenuText": "Automatic Multi-Packing",
             "ToolTip": "Automatically packs multiple UV meshes into a single texture.",
         }
