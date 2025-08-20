@@ -13,7 +13,7 @@ import exporters
 class UVU_com_export():
     def GetResources(self):
         return {
-            "Pixmap": os.path.join(UVUlib.path_icons, "export.png"),
+            "Pixmap": os.path.join(UVUlib.path_icons, "export.svg"),
             "MenuText": "Export",
             "ToolTip": "Exports the selected UV mesh packing into any supported file format",
         }
