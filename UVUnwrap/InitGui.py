@@ -12,8 +12,8 @@ class UVUnwrap(Workbench):
     def Initialize(self):
         import UVUlib
 
-        meshing_commands = ["UVU_meshify", "UVU_pinFeature"]
-        unwrapping_commands = ["UVU_unwrapLSCM"]
+        meshing_commands = ["UVU_meshify"]
+        unwrapping_commands = ["UVU_unwrapLSCM", "UVU_pinFeature"]
         packing_commands = ["UVU_manualPacking", "UVU_multiPacking"]
         selection_commands = ["UVU_printSelection_shape", "UVU_printSelection_face", "UVU_printSelection_edge", "UVU_printSelection_vertex", "UVU_printSelection_any"]
         export_commands = ["UVU_export"]
