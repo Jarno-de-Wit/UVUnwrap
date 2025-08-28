@@ -2,7 +2,7 @@
 import os
 import FreeCAD as App
 import FreeCADGui as Gui
-from PySide2.QtWidgets import QFileDialog
+from PySide.QtWidgets import QFileDialog
 
 # Local module imports
 import UVUlib
