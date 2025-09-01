@@ -1,5 +1,6 @@
 ## UVUnwrap texture mapping workbench
-![UVUnwrap workbench](https://github.com/Jarno-de-Wit/UVUnwrap/main/docs/img/UVUnwrapped.png)
+
+![UVUnwrap workbench](https://raw.githubusercontent.com/Jarno-de-Wit/UVUnwrap/refs/heads/main/docs/img/UVUnwrapped.png)
 
 ## Important notes
 * This workbench is highly experimental. It should not be used for serious work.
