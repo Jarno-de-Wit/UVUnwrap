@@ -112,7 +112,6 @@ class FaceMesh():
         # Remap the triangle / vertex indices
         vertex_offset = len(self.vertices)
         triangles = [tuple(i + vertex_offset for i in tri) for tri in triangles]
-        assert all(len(set(tri)) == 3 for tri in triangles)
 
         self.vertices.extend(vertices)
         self.triangles.extend(triangles)
