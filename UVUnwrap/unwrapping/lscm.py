@@ -31,7 +31,7 @@ def unwrap_lscm(vertices: list[tuple[FreeCAD.Base.Vector]], triangles: list[tupl
     A = sp.sparse.block_array([[Mf.real, -Mf.imag], [Mf.imag, Mf.real]], format = "csr")
     B = sp.sparse.block_array([[Mp.real, -Mp.imag], [Mp.imag, Mp.real]], format = "csr")
     b = -B @ np.array(pinned_uvs, dtype = np.float64).T.flatten()
-    uv = sp.sparse.linalg.inv(A.T @ A) @ (A.T @ b)
+    uv = sp.sparse.linalg.spsolve(A.T @ A, A.T @ b)
 
     # Turn uv into a list of tuples, and re-insert the pinned vertex uvs at their correct positions
     uv = [(*i,) for i in uv.reshape((2, uv.size // 2)).T]
