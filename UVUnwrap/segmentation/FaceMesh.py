@@ -84,7 +84,7 @@ class FaceMesh():
         # Recompute the mesh
         bodies = {UVUlib.link_to_feature(face[0]) for face in self.obj.Faces}
         for body in bodies:
-            if self.obj.ManualMeshParams:
+            if not self.obj.ManualMeshParams:
                 MeshPart.meshFromShape(UVUlib.get_feature(body).Shape)
             else:
                 MeshPart.meshFromShape(
