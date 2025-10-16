@@ -10,6 +10,7 @@ import os
 import math
 import FreeCAD as App
 import FreeCADGui as Gui
+import Part
 from functools import cached_property
 import itertools
 
@@ -149,30 +150,69 @@ class UVMesh():
         for edge in edges:
             edgeShape = UVUlib.get_feature(edge)
             edge_nodes = [i for i, vertex in enumerate(self.vertices) if edgeShape.isInside(vertex, tolerance, False)]
-            edge_segments = sum(([*itertools.combinations(filter(lambda i: i in edge_nodes, tri), 2)] for tri in self.triangles), start = [])
+            # Find all the segments that lay on the edge. Every triangle may
+            # not provide more than 2 segments, since any more than that is
+            # likely to include faulty backtracking segments that don't actually
+            # lay on the edge.
+            edge_segments = sum(
+                ([*itertools.combinations(filter(lambda i: i in edge_nodes, tri), 2)]
+                     for tri in self.triangles)
+                , start = [])
             edge_nodes = set().union(*edge_segments) # Filter out unused edge nodes that originated from a different terminally coincident edge
 
             if not edge_segments:
                 App.Console.PrintWarning("Edge without segments\n")
                 continue
-            seg = edge_segments[0]
-            edge_mode = sum(seg[0] in tri and seg[1] in tri for tri in self.triangles) >= 2
 
-            # Try to order the segments to form a single continuous line
+            # Determine the edge mode (internal / external) and draw count
+            shape = next(UVUlib.get_feature_shapes(edge, implicit = True))
+            faces = shape.ancestorsOfType(edgeShape, Part.Face)
+            face_included = [any(face.isSame(i) for i in self.obj.Source.Proxy.topo_faces) for face in faces]
+            if len(face_included) == 1: # Ensure that seems of e.g. a cone or cylinder are properly handled.
+                face_included *= 2
+            # Edge is interior ONLY if it is fused, and all adjecent faces are included.
+            interior_edge = edge in self.obj.Source.Proxy.edges and all(face_included)
+            draw_count = 1 if interior_edge else sum(face_included)
+
+            # Find the points that start / end the edge
             start_point = edgeShape.Vertexes[0]
-            cur_idx = next((i for i in edge_nodes if start_point.isInside(self.vertices[i], tolerance, False)), min(edge_nodes, default = 0))
+            start_idxs = [i for i in edge_nodes if start_point.isInside(self.vertices[i], tolerance, False)]
             end_point = edgeShape.Vertexes[-1]
-            end_idx = [i for i in edge_nodes if end_point.isInside(self.vertices[i], tolerance, False)]
-            edge_coords = [self.uv[cur_idx]]
-            while edge_segments and (cur_idx not in end_idx or len(edge_coords) <= 1):
-                next_seg = edge_segments.pop(next((i for i, seg in enumerate(edge_segments) if cur_idx in seg), 0))
-                # If necessary, flip the segment direction
-                if next_seg[1] == cur_idx:
-                    next_seg = next_seg[-1::-1]
-                cur_idx = next_seg[1]
-                edge_coords.append(self.uv[cur_idx])
+            end_idxs = [i for i in edge_nodes if end_point.isInside(self.vertices[i], tolerance, False)]
 
-            yield (edge_coords, edge_mode)
+            # Generate all uv-space edges
+            for draw_i in range(draw_count):
+                # For any second edge, update the start_idxs
+                if draw_i:
+                    edge_nodes = set().union(*edge_segments) # Filter out unused edge nodes that originated from a different terminally coincident edge
+                    start_idxs = [i for i in start_idxs if i in edge_nodes]
+                    end_idxs = [i for i in end_idxs if i in edge_nodes]
+                # Create a the actual line
+                cur_idx = start_idxs[0]
+                edge_coords = [self.uv[cur_idx]]
+                edge_idxs = {cur_idx}
+                while edge_segments and (cur_idx not in end_idxs or len(edge_coords) <= 1):
+                    # The next segment is chosen as:
+                    # If possible, go to a new vertex (avoids backtracking in triangle fans).
+                    # If at least ones without backtrack, take the shortest segment (avoids corner cutting)
+                    # If none without backtrack, pick one that goes to an end_idx (circular edge) (or if not possible, pick any but that shouldn't happen anyway)
+                    candidates = [*filter(lambda seg: cur_idx in seg, edge_segments)]
+                    no_backtrack = [*filter(lambda seg: any(i not in edge_idxs for i in seg), candidates)]
+                    if no_backtrack:
+                        next_seg = min(no_backtrack,
+                                       key = lambda seg: sum((i - j)**2 for i, j in zip(self.uv[seg[0]], self.uv[seg[1]]))
+                                       )
+                    else:
+                        next_seg = next((seg for seg in candidates if any(i in end_idxs for i in seg)), candidates[0])
+                    edge_segments.remove(next_seg)
+                    # If necessary, flip the segment direction
+                    if next_seg[1] == cur_idx:
+                        next_seg = next_seg[-1::-1]
+                    cur_idx = next_seg[1]
+                    edge_coords.append(self.uv[cur_idx])
+                    edge_idxs.add(cur_idx)
+
+                yield (edge_coords, interior_edge)
 
 class UVMeshVP():
     def __init__(self, obj):
