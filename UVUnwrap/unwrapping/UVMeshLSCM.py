@@ -15,6 +15,7 @@ class UVMeshLSCM(UVMesh):
     def __init__(self, obj, faceMesh: tuple[str] = None, pins: list[tuple[str]] = []):
         super().__init__(obj, faceMesh)
         obj.addProperty("App::PropertyLinkList", "Pins", "LSCM", "The pins which pin specific vertices at particular local UV coordinates").Pins = [UVUlib.get_feature(pin) for pin in pins]
+        obj.addProperty("App::PropertyBool", "AllowLargeMesh", "LSCM", "Enables calculations for 'large' meshes (>3000 vertices). Note that this may take a long time, causing the program to go unresponsive.").AllowLargeMesh = False
 
     def execute(self, obj):
         if not hasattr(obj.Source, "Proxy") or not isinstance(obj.Source.Proxy, FaceMesh):
@@ -26,6 +27,8 @@ class UVMeshLSCM(UVMesh):
             raise UnderconstrainedMeshException("All pinned vertices in the LSCM UV Mesh are constrained to the same coordinates. This would yield a singular UV mesh.")
         elif len(self.pinned_vertices) != len(set(self.pinned_vertices)):
             raise OverconstrainedMeshException("A node within the LSCM UV Mesh is multiply constrained. Please ensure each vertex only has one constrained UV coordinate.")
+        elif len(self.vertices) > 3000 and not self.obj.AllowLargeMesh:
+            raise LargeMeshException(f"The provided mesh has {len(self.vertices)} vertices, which is more than the allowed 3000. Calculating the LSCM for such a large mesh might take a long time. Either reduce mesh detail level, or enable AllowLargeMesh for the UVMeshLSCM object.")
 
         faceMesh = obj.Source.Proxy
         self.uv = unwrap_lscm(faceMesh.vertices, faceMesh.triangles, self.pinned_vertices, self.pinned_uvs)
