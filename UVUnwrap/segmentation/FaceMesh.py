@@ -34,31 +34,29 @@ class FaceMesh():
     def __init__(self, obj, faces: list[tuple[str]], edges: list[tuple[str]] = [], manualMeshParams: bool = False, linearDeflection: float = 5., angularDeflection: float = 10., relativeDeflection: bool = False):
         self.obj = obj
         obj.Proxy = self
-        obj.addProperty("App::PropertyLinkSubListGlobal", "Faces", "Main", "The faces included in this mesh")
-        obj.addProperty("App::PropertyLinkSubListGlobal", "Edges", "Main", "The edges along which the mesh is fused")
-        obj.addProperty("App::PropertyBool", "ManualMeshParams", "Main", "Whether the mesh quality parameters are set manually").ManualMeshParams = manualMeshParams
-        obj.addProperty("App::PropertyFloat", "LinearDeflection", "Main", "The maximum linear deflection of the generated mesh").LinearDeflection = linearDeflection
-        obj.addProperty("App::PropertyFloat", "AngularDeflection", "Main", "The maximum linear deflection of the generated mesh").AngularDeflection = angularDeflection
-        obj.addProperty("App::PropertyBool", "RelativeDeflection", "Main", "Whether the linear deflection value is relative to the respective edge length").RelativeDeflection = relativeDeflection
-        obj.addProperty("App::PropertyBool", "SaveMesh", "Main", "Determines whether the mesh and vertex data should be saved with the document").SaveMesh = False
+        obj.addProperty("App::PropertyLinkSubListGlobal", "Faces", "Sources", "The faces included in this mesh")
+        obj.addProperty("App::PropertyLinkSubListGlobal", "Edges", "Sources", "The edges along which the mesh is fused")
+        obj.addProperty("App::PropertyBool", "ManualMeshParams", "Meshing", "Whether the mesh quality parameters are set manually").ManualMeshParams = manualMeshParams
+        obj.addProperty("App::PropertyFloat", "LinearDeflection", "Meshing", "The maximum linear deflection of the generated mesh").LinearDeflection = linearDeflection
+        obj.addProperty("App::PropertyFloat", "AngularDeflection", "Meshing", "The maximum linear deflection of the generated mesh").AngularDeflection = angularDeflection
+        obj.addProperty("App::PropertyBool", "RelativeDeflection", "Meshing", "Whether the linear deflection value is relative to the respective edge length").RelativeDeflection = relativeDeflection
+        obj.addProperty("App::PropertyBool", "CheckDuplicate", "Meshing", "Whether the FaceMesh should detect duplicated faces and edges in the selection during meshing. Disabling this can give a slight performance improvement.").CheckDuplicate = True
         self.init()
         self.set_selection(faces, edges)
 
     def init(self):
         """
-        A function that initiates all relevant variables with empty / placeholder variables.
+        A function that initiates all relevant variables with empty / placeholder values.
         """
         # Book-keeping data:
-        # self.faces = set() # A set of all FreeCAD features included as a face to allow for recomputation of the mesh - Initiated as a cached property.
-        # self.edges = set() # A set of all FreeCAD features included as an edge to allow for recomputation of the mesh - Initiated as a cached property.
-        self._faces = [] # A list of the TopoShape faces included in the mesh. Useful to limit the required recomputations by preventing repeated faces through indirect selections.
-        self._edges = [] # A list of the TopoShape edges included in the mesh. Useful to limit the required recomputations by preventing repeated edges through indirect selections.
+        self.topo_faces = [] # A list of the TopoShape faces included in the mesh. Useful to limit the required recomputations by preventing repeated faces through indirect selections.
+        self.topo_edges = [] # A list of the TopoShape edges included in the mesh. Useful to limit the required recomputations by preventing repeated edges through indirect selections.
 
         # Mesh data:
         self.vertices: list[App.Base.Vector] = []
         self.triangles: list[tuple[int]] = []
 
-    def set_selection(self, faces, edges):
+    def set_selection(self, faces: list[tuple[str]], edges: list[tuple[str]]):
         # TODO: Cleanup
         self.clear_selection()
         # Object construction:
@@ -72,15 +70,37 @@ class FaceMesh():
         self.obj.Edges = []
         self.faces.clear()
         self.edges.clear()
-        self._faces.clear()
-        self._edges.clear()
+        self.topo_faces.clear()
+        self.topo_edges.clear()
         self.vertices.clear()
+        self.triangles.clear()
 
-    def execute(self, obj):
+    def execute(self, obj = None):
         """
-        This function tests if the object should be recomputed, and does so if required.
+        Recomputes the mesh created by / stored in this object.
         """
-        self.recompute()
+        # Clear the data of the previous recompute
+        self.clear()
+        # Recompute the mesh
+        bodies = {UVUlib.link_to_feature(face[0]) for face in self.obj.Faces}
+        for body in bodies:
+            if self.obj.ManualMeshParams:
+                MeshPart.meshFromShape(UVUlib.get_feature(body).Shape)
+            else:
+                MeshPart.meshFromShape(
+                    Shape = UVUlib.get_feature(body).Shape,
+                    LinearDeflection = self.obj.LinearDeflection,
+                    AngularDeflection = math.radians(self.obj.AngularDeflection),
+                    Relative = self.obj.RelativeDeflection
+                    )
+
+        # Update the FaceMesh object
+        for feature in self.faces:
+            for face in UVUlib.get_feature_faces(feature, implicit = True):
+                self._add_face(face)
+        for feature in self.edges:
+            for edge in UVUlib.get_feature_edges(feature, implicit = True):
+                self._add_edge(edge)
 
     def onChanged(self, obj, prop):
         return
@@ -98,10 +118,13 @@ class FaceMesh():
 
 
     def _add_face(self, face: "OCCT::Face"):
-        if any(face.isEqual(_face) for _face in self._faces):
+        """
+        Adds the mesh for the given toposhape face to the stored mesh data.
+        """
+        if self.obj.CheckDuplicate and any(face.isEqual(_face) for _face in self.topo_faces):
             warn( RepeatedFaceWarning("Cannot re-add an already added face to a FaceMesh object") )
             return
-        self._faces.append(face)
+        self.topo_faces.append(face)
         # Get the existing face tessellation without creating a new tessellation
         vertices, triangles = face.tessellate(math.inf)
         UVNodes = face.getUVNodes()
@@ -128,10 +151,10 @@ class FaceMesh():
         self.obj.touch()
 
     def _add_edge(self, edge: "OCCT::Edge"):
-        if any(edge.isEqual(_edge) for _edge in self._edges):
+        if self.obj.CheckDuplicate and any(edge.isEqual(_edge) for _edge in self.topo_edges):
             warn( RepeatedEdgeWarning("Cannot re-add an already added edge to a FaceMesh object") )
             return
-        self._edges.append(edge)
+        self.topo_edges.append(edge)
         # Apply the relevant transformations to the mesh data
         self.fuse_edge(edge)
 
@@ -144,65 +167,27 @@ class FaceMesh():
         """
         Merges another FaceMesh into the current faceMesh.
         """
-        if any(any(face.isEqual(_face) for _face in faceMesh._faces) for face in self._faces):
-            raise RepeatedFaceException("Cannot merge two FaceMesh objects with repeated faces")
-        index_offset = len(self.vertices)
-
-        self.faces.extend(faceMesh.faces)
-        self._faces.extend(faceMesh._faces)
-        self.vertices.extend(faceMesh.vertices)
-        self.triangles.extend([tuple(i + index_offset for i in triangle) for triangle in faceMesh.triangles])
+        raise NotImplementedError("FaceMesh merging is not yet implemented.")
 
     def clear(self):
         """
         Clears all reconstructable data from the object
         """
-        self._faces.clear()
-        self._edges.clear()
+        self.topo_faces.clear()
+        self.topo_edges.clear()
         self.vertices.clear()
         self.triangles.clear()
 
-    def recompute(self):
-        # Clear the data of the previous recompute
-        self.clear()
-        # Recompute the mesh
-        bodies = {UVUlib.link_to_feature(face[0]) for face in self.obj.Faces}
-        for body in bodies:
-            if self.obj.ManualMeshParams:
-                MeshPart.meshFromShape(UVUlib.get_feature(body).Shape)
-            else:
-                MeshPart.meshFromShape(
-                    Shape = UVUlib.get_feature(body).Shape,
-                    LinearDeflection = self.obj.LinearDeflection,
-                    AngularDeflection = math.radians(self.obj.AngularDeflection),
-                    Relative = self.obj.RelativeDeflection
-                    )
-
-        # Update the FaceMesh object
-        for feature in self.faces:
-            for face in UVUlib.get_feature_faces(feature, implicit = True):
-                self._add_face(face)
-        for feature in self.edges:
-            for edge in UVUlib.get_feature_edges(feature, implicit = True):
-                self._add_edge(edge)
-
     def __getstate__(self):
-        if self.obj.SaveMesh:
-            return {
-                "vertices": self.vertices,
-                "triangles": self.triangles,
-                }
-        else:
-            return {}
+        return {}
     def __setstate__(self, state):
-        self.vertices = state.get("vertices", [])
-        self.triangles = state.get("triangles", [])
+        return
 
     def onDocumentRestored(self, obj):
         self.obj = obj
         self.obj.ViewObject.Proxy.obj = self.obj.ViewObject
         self.init()
-        self.recompute()
+        self.execute()
 
     # The following properties are implemented as cached properties to allow for
     # these to be correctly set for objects loaded from a file. This includes
@@ -227,7 +212,7 @@ class FaceMesh():
         """
         The area of the toposhape faces included in the FaceMesh.
         """
-        return sum(face.Area for face in self._faces)
+        return sum(face.Area for face in self.topo_faces)
     @property
     def mesh_area(self):
         """
