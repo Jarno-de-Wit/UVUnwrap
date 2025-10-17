@@ -23,6 +23,7 @@ def unwrap_lscm(vertices: list[tuple[FreeCAD.Base.Vector]], triangles: list[tupl
     pinned_vertices, pinned_uvs = [[*i] for i in zip(*sorted(zip(pinned_vertices, pinned_uvs)))]
 
     M = generate_coefficients(vertices, triangles)
+    M = M.tocsr()
     pinned_mask = np.zeros((len(vertices),), dtype = bool)
     pinned_mask[pinned_vertices] = True
     Mf = M[:, ~pinned_mask] # The matrix containing all free entries of M
@@ -45,7 +46,9 @@ def generate_coefficients(vertices: list[FreeCAD.Base.Vector], triangles: list[t
     """
     Generates the complex coefficient matrix M for the given tessellation.
     """
-    M = sp.sparse.dok_array((len(triangles), len(vertices)), dtype = dtype)
+    row = []
+    col = []
+    vals = []
 
     # Triangle-local axis system definition:
     # A right handed axis system is used
@@ -75,6 +78,9 @@ def generate_coefficients(vertices: list[FreeCAD.Base.Vector], triangles: list[t
 
         for weight, vertex in zip([w0, w1, w2], triangle):
             # The matrix entry is the weight of the vertex / sqrt(triangle area)
-            M[i_triangle, vertex] = weight / sq_d_ti
+            row.append(i_triangle)
+            col.append(vertex)
+            vals.append(weight / sq_d_ti)
 
+    M = sp.sparse.coo_array((vals, (row, col)), (len(triangles), len(vertices)), dtype = dtype)
     return M
