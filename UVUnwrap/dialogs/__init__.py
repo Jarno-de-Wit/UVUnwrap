@@ -5,6 +5,7 @@ This module contains all the python logic behind any of the task dialogs used in
 from .FaceMesh import FaceMeshDialog
 
 # Unwrapping
+from .UnwrapPlane import UnwrapDialogPlane
 from .UnwrapLSCM import UnwrapDialogLSCM
 from .UVPin import UVPinDialog
 

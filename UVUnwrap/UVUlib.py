@@ -152,6 +152,8 @@ def get_feature(feature, silent: bool = True):
     elif obj.isDerivedFrom("Part::Feature"):
         return obj.getSubObject(feature[2])
 
+feature_to_obj = get_feature
+
 # ==========================< Feature to Sub-Feature >==========================
 # The following functions take in a feature definition, and expands it to all
 # the feature definitions for the sub-features of the given type that are
@@ -264,11 +266,14 @@ def link_to_feature(link):
     else:
         raise ValueError("Invalid link type")
 
+obj_to_feature = link_to_feature
 # =============================< Dialog handling >==============================
 def feature_to_string(feature):
     """
     Returns a string: "file -> object : element" (with the element being omitted if it doesn't specify anything specific e.g. in the case of selecting a full body).
     """
+    if feature is None:
+        return ""
     return feature[0] + " -> " + feature[1] + (" : " + feature[2] if len(feature) > 2 and feature[2] else "")
 
 def string_to_feature(string):
@@ -285,6 +290,31 @@ def string_to_feature(string):
     object, element, *_ = (*string.split(":", maxsplit = -1), "")
     feature = (file if file else (App.ActiveDocument.Name if App.ActiveDocument is not None else ""), object, element)
     return tuple(i.strip(" \t") for i in feature)
+
+def link_to_string(link):
+    return feature_to_string(link_to_feature(link))
+
+def string_to_link(string):
+    return feature_to_link(string_to_feature(string))
+
+def string_to_obj(string):
+    return feature_to_obj(string_to_feature(string))
+
+# =================================< Geometry >=================================
+
+def get_axis(obj):
+    """
+    From the given object, gets the principal axis (normal / axis / z).
+    """
+    if not hasattr(obj, "isDerivedFrom"):
+        raise ValueError("Object is not a FreeCAD object")
+    elif obj.isDerivedFrom("PartDesign::Plane") or \
+       obj.isDerivedFrom("PartDesign::Line") or \
+       obj .isDerivedFrom("PartDesign::CoordinateSystem") or \
+       obj.isDerivedFrom("App::Plane"):
+        return obj.Placement.Matrix.col(2) # multVec(obj.Placement.inverse().Base + App.Base.Vector(0, 0, 1))
+    elif obj.isDerivedFrom("App::Line"):
+        return obj.Placement.Matrix.col(0)
 
 # ==================================< Layout >==================================
 def get_layout_transform(layout: tuple[float], chained: bool = True) -> np.ndarray[np.float64]:

@@ -24,6 +24,8 @@ class UVU_com_unwrap():
         selection = UVUlib.get_feature_selection()
         if self.method == "LSCM":
             taskDialog = dialogs.UnwrapDialogLSCM()
+        elif self.method == "Plane":
+            taskDialog = dialogs.UnwrapDialogPlane()
         else:
             App.Console.PrintCritical("Invalid unwrapping method selected. This shouldn't have happened.")
             return
@@ -32,3 +34,4 @@ class UVU_com_unwrap():
         Gui.Control.showDialog(taskDialog)
 
 Gui.addCommand("UVU_unwrapLSCM", UVU_com_unwrap("LSCM"))
+Gui.addCommand("UVU_unwrapPlane", UVU_com_unwrap("Plane"))

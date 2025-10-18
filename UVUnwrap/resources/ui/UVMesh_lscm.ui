@@ -97,6 +97,9 @@
    </item>
    <item row="2" column="0">
     <widget class="QCheckBox" name="Allow_rotation">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="text">
       <string>Allow Rotation</string>
      </property>

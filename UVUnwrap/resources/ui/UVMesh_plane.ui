@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>300</height>
+    <height>400</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -59,25 +59,22 @@
       </widget>
      </item>
      <item row="2" column="0">
-      <widget class="QPushButton" name="Plane_select">
+      <widget class="QLabel" name="Ref1_label">
        <property name="text">
-        <string>Plane / Normal</string>
+        <string>Reference 1</string>
        </property>
-       <property name="checkable">
-        <bool>true</bool>
-       </property>
-       <attribute name="buttonGroup">
-        <string notr="true">Select_group</string>
-       </attribute>
       </widget>
      </item>
-     <item row="2" column="1">
-      <widget class="QLineEdit" name="Plane_textbox"/>
-     </item>
      <item row="3" column="0">
-      <widget class="QPushButton" name="Axis_select">
+      <widget class="QPushButton" name="Ref1_select">
+       <property name="minimumSize">
+        <size>
+         <width>100</width>
+         <height>0</height>
+        </size>
+       </property>
        <property name="text">
-        <string>Base Axis</string>
+        <string>Plane / Line / Axis</string>
        </property>
        <property name="checkable">
         <bool>true</bool>
@@ -88,12 +85,177 @@
       </widget>
      </item>
      <item row="3" column="1">
-      <widget class="QLineEdit" name="Axis_textbox"/>
+      <widget class="QLineEdit" name="Ref1_textbox"/>
+     </item>
+     <item row="4" column="0">
+      <widget class="QCheckBox" name="Ref1_manual">
+       <property name="text">
+        <string>Manual</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1">
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QLabel" name="X1_label">
+         <property name="text">
+          <string>X</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QDoubleSpinBox" name="X1"/>
+       </item>
+       <item>
+        <widget class="QLabel" name="Y1_label">
+         <property name="text">
+          <string>Y</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QDoubleSpinBox" name="Y1"/>
+       </item>
+       <item>
+        <widget class="QLabel" name="Z1_label">
+         <property name="text">
+          <string>Z</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QDoubleSpinBox" name="Z1"/>
+       </item>
+      </layout>
+     </item>
+     <item row="5" column="0">
+      <widget class="QFrame" name="line_3">
+       <property name="frameShape">
+        <enum>QFrame::Shape::HLine</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Shadow::Sunken</enum>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="1">
+      <widget class="QFrame" name="line_4">
+       <property name="frameShape">
+        <enum>QFrame::Shape::HLine</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Shadow::Sunken</enum>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="0">
+      <widget class="QLabel" name="Ref2_label">
+       <property name="text">
+        <string>Reference 2</string>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="0">
+      <widget class="QPushButton" name="Ref2_select">
+       <property name="text">
+        <string>Line</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <attribute name="buttonGroup">
+        <string notr="true">Select_group</string>
+       </attribute>
+      </widget>
+     </item>
+     <item row="7" column="1">
+      <widget class="QLineEdit" name="Ref2_textbox"/>
+     </item>
+     <item row="8" column="0">
+      <widget class="QCheckBox" name="Ref2_manual">
+       <property name="text">
+        <string>Manual</string>
+       </property>
+      </widget>
+     </item>
+     <item row="8" column="1">
+      <layout class="QHBoxLayout" name="horizontalLayout_3">
+       <item>
+        <widget class="QLabel" name="X2_label">
+         <property name="text">
+          <string>X</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QDoubleSpinBox" name="X2"/>
+       </item>
+       <item>
+        <widget class="QLabel" name="Y2_label">
+         <property name="text">
+          <string>Y</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QDoubleSpinBox" name="Y2"/>
+       </item>
+       <item>
+        <widget class="QLabel" name="Z2_label">
+         <property name="text">
+          <string>Z</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QDoubleSpinBox" name="Z2"/>
+       </item>
+      </layout>
+     </item>
+     <item row="9" column="0">
+      <widget class="QFrame" name="line_5">
+       <property name="frameShape">
+        <enum>QFrame::Shape::HLine</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Shadow::Sunken</enum>
+       </property>
+      </widget>
+     </item>
+     <item row="9" column="1">
+      <widget class="QFrame" name="line_6">
+       <property name="frameShape">
+        <enum>QFrame::Shape::HLine</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Shadow::Sunken</enum>
+       </property>
+      </widget>
+     </item>
+     <item row="10" column="0">
+      <widget class="QLabel" name="Angle_label">
+       <property name="text">
+        <string>Angle</string>
+       </property>
+      </widget>
+     </item>
+     <item row="10" column="1">
+      <widget class="QDoubleSpinBox" name="Angle">
+       <property name="suffix">
+        <string> deg</string>
+       </property>
+       <property name="minimum">
+        <double>-360.000000000000000</double>
+       </property>
+       <property name="maximum">
+        <double>360.000000000000000</double>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
    <item row="1" column="0">
-    <widget class="QFrame" name="line_3">
+    <widget class="QFrame" name="line_7">
      <property name="frameShape">
       <enum>QFrame::Shape::HLine</enum>
      </property>
@@ -103,7 +265,60 @@
     </widget>
    </item>
    <item row="2" column="0">
+    <widget class="QLabel" name="Attach_label">
+     <property name="text">
+      <string>Placement mode</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QRadioButton" name="Attach_1">
+     <property name="text">
+      <string>Plane/Normal + Angle</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+     <attribute name="buttonGroup">
+      <string notr="true">Attach_group</string>
+     </attribute>
+    </widget>
+   </item>
+   <item row="4" column="0">
+    <widget class="QRadioButton" name="Attach_2">
+     <property name="text">
+      <string>Plane/Normal + U-Axis</string>
+     </property>
+     <attribute name="buttonGroup">
+      <string notr="true">Attach_group</string>
+     </attribute>
+    </widget>
+   </item>
+   <item row="5" column="0">
+    <widget class="QRadioButton" name="Attach_3">
+     <property name="text">
+      <string>U-Axis + V-Axis</string>
+     </property>
+     <attribute name="buttonGroup">
+      <string notr="true">Attach_group</string>
+     </attribute>
+    </widget>
+   </item>
+   <item row="6" column="0">
+    <widget class="QFrame" name="line_8">
+     <property name="frameShape">
+      <enum>QFrame::Shape::HLine</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Shadow::Sunken</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="7" column="0">
     <widget class="QCheckBox" name="Allow_rotation">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="text">
       <string>Allow Rotation</string>
      </property>
@@ -114,15 +329,16 @@
  <tabstops>
   <tabstop>FaceMesh_select</tabstop>
   <tabstop>FaceMesh_textbox</tabstop>
-  <tabstop>Plane_select</tabstop>
-  <tabstop>Plane_textbox</tabstop>
-  <tabstop>Axis_select</tabstop>
-  <tabstop>Axis_textbox</tabstop>
+  <tabstop>Ref1_select</tabstop>
+  <tabstop>Ref1_textbox</tabstop>
+  <tabstop>Ref2_select</tabstop>
+  <tabstop>Ref2_textbox</tabstop>
   <tabstop>Allow_rotation</tabstop>
  </tabstops>
  <resources/>
  <connections/>
  <buttongroups>
+  <buttongroup name="Attach_group"/>
   <buttongroup name="Select_group">
    <property name="exclusive">
     <bool>false</bool>

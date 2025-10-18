@@ -221,7 +221,7 @@ class UVMeshVP():
 
     def setEdit(self, obj, edit_mode):
         if edit_mode == 0:
-            taskDialog = obj.Object.Proxy.taskDialog(obj.Object.Proxy)
+            taskDialog = obj.Object.Proxy.taskDialog(obj.Object)
             Gui.Control.showDialog(taskDialog)
             return True
 

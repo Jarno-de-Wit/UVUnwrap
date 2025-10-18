@@ -20,15 +20,14 @@ class UnwrapDialogLSCM(unwrapDialog):
         self.toggles = ["FaceMesh", "Pins"]
         self.toggle_texts = ["FaceMesh", "UV Pins", "Pin Vertex"]
 
-        self.uvMesh = uvMesh
         if uvMesh is not None:
             self.toggle_select(True, 2)
-            for pins in uvMesh.obj.Pins:
+            for pins in uvMesh.Pins:
                 pin = UVUlib.link_to_feature(pins)
                 self.addSelection(*pin)
             self.toggle_select(False, 2)
             self.toggle_select(True, 1)
-            self.addSelection(*UVUlib.link_to_feature(uvMesh.obj.Source))
+            self.addSelection(*UVUlib.link_to_feature(uvMesh.Source))
             self.toggle_select(False, 1)
 
     def accept(self):
@@ -39,7 +38,7 @@ class UnwrapDialogLSCM(unwrapDialog):
             if self.uvMesh is None:
                 UVMeshLSCM.make_UVMeshLSCM(faceMesh, self.pins)
             else:
-                UVMeshLSCM.update_UVMeshLSCM(self.uvMesh.obj, faceMesh, self.pins)
+                UVMeshLSCM.update_UVMeshLSCM(self.uvMesh, faceMesh, self.pins)
         except ValueError:
             return False
 
